@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	 <div class="container">
+		 <!-- 게시글 목록 -->   
+    	<h2>게시글 목록</h2>
+    	 <form id="frm" method="post">
+    	<table id="my-table" class="board_list">
+	        <colgroup>
+	            <col width="15%"/>
+	            <col width="*"/>
+	            <col width="15%"/>
+	            <col width="20%"/>
+	        </colgroup>
+	        <thead>
+	        <!-- 게시판 상단 -->
+	        	<tr>
+	        	  <th scope="col">글번호</th>
+	        	  <th scope="col">제목</th>
+	        	  <th scope="col">작성자</th>
+	        	  <th scope="col">작성일</th>
+	        	  <th scope="col"><input type="checkbox" id="allCheck"/></th>
+	        	</tr>
+	        </thead>
+	        <!-- 게시판 구현부 -->
+	        <tbody id="tBody">
+	        	<tr class="boardItem" th:if="${list.size} > 0" th:each="list : ${list}">	 
+	        	  <td id="idx" th:text="${list.boardIdx}"></td>
+	        	  <td id="title" class="title">
+	        	  <a th:href="/board/openBoardDetail.do?boardIdx="
+	        	  th:attrapend="${list.boardIdx}"
+	        	  th:text="${list.title}"></a></td>
+	        	  <td id="creatorId" th:text="${list.creatorId}"></td>
+	        	  <td th:if="
+	        	  ${#calenders.format(#calenders.createNow(), 'yyyy-MM-dd')} ==
+	        	  ${#temporals.format(#list.createdDatetime, 'yyyy-MM-dd')}"
+	        	  th:text="${#temporals.format(#list.createdDatetime, 'HH:mm')}"></td>
+	        	  <td th:unless="
+	        	  ${#calenders.format(#calenders.createNow(), 'yyyy-MM-dd')} ==
+	        	  ${#temporals.format(list.createdDatetime, 'yyyy-MM-dd')}"
+	        	  th:text="${#temporals.format(list.createdDatetime, 'yyyy-MM-dd')}"></td>
+	        	  <td><input type="checkBox" class="deleteCheck" value="${list.boardIdx}"></td>
+	        	</tr>
+	        </tbody>
+	     </table>
+	    </form>
+	    <a href="/board/openBoardWrite.do" class="btn">글 쓰기</a>
+	    
+	    
+	   
+	  <script type="text/javascript">
+	  
+	  //체크박스 전체체크 구현
+
+	$(document).ready(function(){
+	
+	$("#allCheck").on("click", function(){
+			console.log("allCheck");
+		var checked = $("#allCheck").is(':checked');
+		
+		if(checked){
+			$(".deleteCheck").prop('checked',true);
+		}else{
+			$(".deleteCheck").prop('checked',false);
+		
+		}		
+	   });
+	   
+	 //선택삭제  
+	
+	});
+	   
+	   
+	   </script>
+	        	
+	        	
+	        	  
+	        	  
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>        	  
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>	    
+
+   	
+
+</body>
+</html>

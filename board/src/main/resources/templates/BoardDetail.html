@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1 th:text="${#temporals.format(boardDetail.assemblyDate, 'yyyy-MM-dd HH:mm')} + ${boardDetail.assemblySort}"></h1>
+<br/><br/>
+
+	assemblyIdx : <span th:text="${boardDetail.assemblyIdx}"></span><br/><br/>
+	assemblyName : <span th:text="${boardDetail.assemblyName}"></span><br/>
+	ageArea : <span th:text="${boardDetail.ageArea}"></span><br/>
+	smallGroup : <span th:text="${boardDetail.smallGroup}"></span><br/>
+	significant : <span th:text="${boardDetail.significant}"></span><br/>
+	attendanceMember : <span th:text="${boardDetail.attendanceMember}"></span><br/>
+	attendanceCount : <span th:text="${boardDetail.attendanceCount}"></span><br/>
+	assemblyDate : <span th:text="${boardDetail.assemblyDate}"></span><br/>
+	
+	<input type="hidden" id="assemblyIdx" name="assemblyIdx" value="${boardDetail.assemblyIdx}"/>
+	
+
+</body>
+</html>

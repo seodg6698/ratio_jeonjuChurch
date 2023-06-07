@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<link rel="stylesheet" th:href="@{/css/redirectStyle.css}"/>
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+	
+	<!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" 
+	rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">-->
+</head>
+<body>
+
+<div class="container">
+		 <!-- 게시글 목록 -->   
+    	<h2>통계 목록</h2>
+    	 <form id="frm" method="post">
+    	 
+    	<table id="my-table" class="table table-hover">
+	        <colgroup>
+	            <col width="15%"/>
+	            <col width="*"/>
+	            <col width="15%"/>
+	            <col width="20%"/>
+	        </colgroup>
+	        <thead>
+	        <!-- 게시판 상단 -->
+	        	<tr>
+	        	  <th scope="col">번호</th>
+	        	  <th scope="col">집회</th>
+	        	  <th scope="col">작성자</th>
+	        	  <th scope="col">작성일</th>
+	        	  <th scope="col"><input type="checkbox" id="allCheck"/></th>
+	        	</tr>
+	        </thead>
+	        <!-- 게시판 구현부 -->
+	        <tbody id="tBody">
+	        	<tr class="boardItem" th:if="${#lists.size(list)} > 0" th:each="list : ${list}">	 
+	        	  <td id="idx" th:text="${list.assemblyIdx}"></td>
+	        	  
+	        	  <td id="assemblySort" class="assemblySort">
+				    <a th:href="@{/board/openBoardDetail.do(assemblyIdx=${list.assemblyIdx})}"
+				       th:text="${list.assemblySort + ' ' + #temporals.format(list.assemblyDate, 'yyyy-MM-dd')}">
+				    </a>
+				</td>
+	        	  <td id="creatorName" th:text="${list.creatorName}"></td>
+	        	  <td th:if="
+	        	  ${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')} ==
+	        	  ${#temporals.format(list.assemblyDate, 'yyyy-MM-dd')}"
+	        	  th:text="${#temporals.format(list.assemblyDate, 'HH:mm')}"></td>
+	        	  <td th:unless="
+	        	  ${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')} ==
+	        	  ${#temporals.format(list.assemblyDate, 'yyyy-MM-dd')}"
+	        	  th:text="${#temporals.format(list.assemblyDate, 'yyyy-MM-dd')}"></td>
+	        	  <td><input type="checkBox" class="deleteCheck" value="${list.assemblyIdx}"></td>
+	        	</tr>
+	        </tbody>
+	     </table>
+	     
+	    </form>
+	    <a href="/board/openBoardWrite.do"  id="writeBtn" class="custom-btn btn1">글 쓰기</a>
+	    </div>
+	    
+	    
+	    
+	    <script type="text/javascript" src="/js/bootstrap.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/popper.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="
+sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+</body>
+</html>

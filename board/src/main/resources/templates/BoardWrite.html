@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>전주교회 인수조사</title>
+	<link rel="stylesheet" th:href="@{/css/writeStyle.css}"/>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+	
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" 
+	rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+</head>
+<body>
+
+	<div class="container">
+	<section>
+	    
+	    <form id="frm" name="frm" method="post" action="/board/insertBoard.do">
+	    		<div id="flex1">
+	    		<h1 id="text">전주교회 인수조사 프로그램</h1> 	
+	    		   
+	    		    <h2>봉사자 성명 : </h2> <br/>
+	    		     <div class="shadow p-3 mb-5 bg-body rounded">
+	    		    <input type="text" id="creatorName" name="creatorName" placeholder="통계 봉사자 성명 입력"/>
+	    		    </div>
+	    			<h2>집회 종류 : </h2> <br/>
+	    			<label>
+	    			<input type="radio" id="sunday" value="주일집회" name="assemblySort"/>
+	    			<span>주일집회</span>
+	    			</label>
+	    			<label>
+	    		    <input type="radio" id="prayer" value="기도집회" name="assemblySort"/>
+	    			<span>기도집회</span>
+	    			</label>
+	    			<label>
+	    			<input type="radio" id="grouping" value="소그룹집회" name="assemblySort"/>
+	    			<span>소그룹 집회</span>
+	    			</label>
+	    			<label>
+	    			<input type="radio" id="special" value="특별집회" name="assemblySort"/>
+	    			<span>특별집회</span>
+	    			</label>
+	    			<br/>
+	    		
+	    			<div class="shadow p-3 mb-5 bg-body rounded">
+	    			<input type="text" id="nameOfSpecial" name="assemblyName" placeholder="집회종류가 특별집회일 경우 특별집회 이름 입력." disabled/>
+	    			</div>
+	    			
+	    			<br/><br/>
+	    			
+	    			<h3>지역선택</h3>
+	    			<span id="gethering"></span>
+	    		
+	    			<select id="group" class="form-select" name="ageArea" aria-label="Default select example">
+	    				<option value="none">지역선택</option>
+	    				<option value="firstArea">1대지역</option>
+	    				<option value="secondArea">2대지역</option>
+	    				<option value="nextGeneration">다음세대</option>
+	    			</select>
+	    			
+	    			<span>인수조사</span>	
+	    			<br/><br/>
+	    			<span id="smallGroup"></span>
+	    			<h3>소그룹선택</h3>
+	    		    
+	    			<select id="selectArea" class="form-select" name="smallGroup" aria-label="Default select example">
+	    			    <option value="none">소그룹 선택</option>
+	    				<option value="hyoja">효자</option>
+	    				<option value="pyeonghwa">평화</option>
+	    				<option value="inhoo">인후</option>
+	    				<option value="jooghwa">중화산</option>
+	    				<option value="hosung">호성</option>
+	    			</select>
+	    			<br/><br/>
+		    		<h3>특이사항</h3><br/>
+		    		<div class="form-floating">
+					  <textarea class="form-control" name="significant" placeholder="Leave a comment here" id="floatingTextarea2"
+					  style="height:300px; width:300px; overflow:scroll;"></textarea>
+					  <label for="floatingTextarea2">필수기재아님</label>
+					</div>
+	    			</div>
+	    			
+	    			<div id="flex2">
+	    			<h2 id="areaName">지역및 소그룹을 선택해주세요.</h2>
+	    			<div id="result"></div>
+	    			<label>전체 선택/해제<input type="checkbox" id="allCheck"/></label>
+	    			<input type="submit" id="submit" class="custom-btn btn-5" value="제출"/>
+	    			<div id="nameList">
+	    			</div>
+
+	    	</div>
+	    	<div="flex3">
+	    	
+	    	<a id ="helpBtn" class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" 
+	    	role="button" aria-expanded="false" aria-controls="multiCollapseExample1">도움말</a>
+	    	
+	    	<div class="row">
+			  <div class="col">
+			    <div class="collapse multi-collapse" id="multiCollapseExample1">
+			      <div class="card card-body">
+			       - 프로그램 사용 절차 - <br/><br/>
+			       1.통계 봉사자 성함(본인이름)입력해주세요. <br/><br/>
+			       2.집회 종류를 체크해주세요. <br/><br/>
+			       3.집회 종류가 특별집회일 경우 입력창이 활성화됩니다. <br/>
+			       특별집회에 체크시 특별집회 이름을 입력해 주세요. <br/><br/>
+			       4.대지역을 선택해주세요. <br/><br/>
+			       5.소그룹을 선택해 주세요. <br/><br/>
+			       6.특이사항을 기재해주세요.(없을시 기재하지 않으셔도 됩니다.) <br/>
+			        특이사항 예시 : 집회 불참자 과반, 집회 장소 변경, 연합집회 등 <br/><br/>
+			       7. 집회인원을 체크해주세요. <br/>전체체크 기능을 활용하여 결석인원을 한명씩 배제하셔도 좋습니다. <br/><br/>
+			       8.'저장' 버튼을 눌러주세요. 인원조사 내용이 제출됩니다. <br/><br/>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			</div>
+			<input type="hidden" id="attendanceCount" name="attendanceCount"/>
+	   </form>
+	  </section>
+    </div>
+    
+    
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>	    
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+
+	 $("#sunday").on("click", function(){
+	 	var sunday = $("#sunday");
+	 	var prayer = $("#prayer");
+	 	var grouping = $("#grouping");
+	 	var special = $("#special");
+	 	var gethering = $("#gethering");
+	 	if(this.checked){
+	 	console.log("주일집회체크");
+	 		gethering.html("주일집회");
+	 		prayer.prop('checked',false);
+	 		grouping.prop('checked',false);
+	 		special.prop('checked',false);
+	 		$("#nameOfSpecial").attr("disabled", "");
+	 	}else{
+	 		gethering.html("");
+	 	}
+	 });
+	 
+	  $("#prayer").on("click", function(){
+	    var sunday = $("#sunday");
+	 	var prayer = $("#prayer");
+	 	var grouping = $("#grouping");
+	 	var special = $("#special");
+	 	var gethering = $("#gethering");
+	    var prayerCheck = prayer.is(":checked");
+	   if(this.checked){
+	   console.log("기도집회체크");
+	   		gethering.html("기도집회");
+	   		sunday.prop('checked',false);
+	 		grouping.prop('checked',false);
+	 		special.prop('checked',false);
+	 		$("#nameOfSpecial").attr("disabled", "");
+	   }else{
+	   		gethering.html("");	
+	   }
+	 
+	 });
+	 
+	  $("#grouping").on("click", function(){
+	    var sunday = $("#sunday");
+	 	var prayer = $("#prayer");
+	 	var grouping = $("#grouping");
+	 	var special = $("#special");
+	 	var gethering = $("#gethering");
+	    var groupingCheck = grouping.is(":checked");
+	   if(this.checked){
+	   console.log("소그룹체크");
+	   		gethering.html("소그룹 집회");
+	   		sunday.prop('checked',false);
+	 		prayer.prop('checked',false);
+	 		special.prop('checked',false);
+	 		$("#nameOfSpecial").attr("disabled", "");
+	   }else{
+	   		gethering.html("");	
+	   }
+	 
+	 });
+    
+    $("#special").on("click", function(){
+     var sunday = $("#sunday");
+	 var prayer = $("#prayer");
+	 var grouping = $("#grouping");
+	 var special = $("#special");
+    var gethering = $("#gethering");
+    var specialCheck = special.is(":checked");
+    
+    var nameOfSpecial = $("#nameOfSpecial");
+    
+    	if(this.checked){
+    		nameOfSpecial.removeAttr("disabled");
+    		console.log("특별집회체크");
+    		gethering.html(nameOfSpecial.val());
+    		sunday.prop('checked',false);
+	 		prayer.prop('checked',false);
+	 		grouping.prop('checked',false);
+    	}else{
+    	nameOfSpecial.attr("disabled", "");
+    		gethering.html("");
+    	}
+    	
+    	});
+    	
+    	$("#nameOfSpecial").on("change", function() { 
+    	
+    	var nameOfSpecial = $(this).val();
+    	var gethering = $("#gethering");
+    	
+    	console.log(nameOfSpecial);
+    	
+    	gethering.html(nameOfSpecial);
+    	
+    	console.log("gethering text changed : " + nameOfSpecial);
+    	  
+    	
+    	 });
+    	
+    	
+    $("#group").on("change", function(){
+     var group = $("#group option:selected").val();
+    var smallGroup = $("#smallGroup");
+    var selectArea = $("#selectArea");
+    var html = "";
+    
+     var firstArea = "firstArea";
+  	 var secondArea = "secondArea";
+  	 var nextGeneration = "nextGeneration";
+  
+  switch (group) {
+    case firstArea:
+      html += '<option value="">소그룹선택</option>';
+      html += '<option value="hyoja">효자</option>';
+      html += '<option value="pyeonghwa">평화</option>';
+      html += '<option value="inhoo">인후</option>';
+      html += '<option value="jooghwa">중화산</option>';
+      html += '<option value="hosung">호성</option>';
+      break;
+    
+    case secondArea:
+      html += '<option value="">소그룹선택</option>';
+      html += '<option value="hyukshin1">혁신1</option>';
+      html += '<option value="hyukshin2">혁신2</option>';
+      html += '<option value="eco">에코</option>';
+      html += '<option value="songcheon">송천</option>';
+      break;
+      
+    default:
+      html += '<option value="">소그룹선택</option>';
+      html += '<option value="youngAdult">청년직장인</option>';
+      html += '<option value="collage">대학생</option>';
+      html += '<option value="student">중고등부</option>';
+      html += '<option value="kids">유초등부</option>';
+      break;
+  }
+  
+  selectArea.html(html);
+    
+    
+    
+    
+    });
+    	
+    $("#selectArea").on("change", function(){
+    var selectedArea = $("#selectArea option:selected").val();
+    var hyoja = $("#hyoja");
+    var pyeonghwa = $("#pyeonghwa");
+    var inhoo = $("#inhoo");
+    var jooghwa = $("#jooghwa");
+    var hosung = $("#hosung");
+    var areaName = $("#areaName");
+    var nameList = $("#nameList");
+    var flex2 = $("#flex2");
+    
+    switch (selectedArea) {
+    
+        case "hyoja":
+        	areaName.html("효자");
+    		
+    		var names = [
+			  "김  선","권희선", "김선영", "김신덕", "김순영",
+			  "신정식", "안해자", "이미순", "이영승", "이은아",
+			  "한영순", "장민상", "정왕봉", "태은미", "최용승",
+			  "임정임", "황호진", "오현숙", "한성희", "서대호", "곽여진"
+			];
+    		var html = "";
+				for (var i = 0; i < names.length; i++) {
+				  html += '<input type="checkbox" class="names"' + 'value="' + names[i] + '"' + 'name="attendanceMember"/>'       
+				  		+ names[i] + '<br/>';
+				}
+    		nameList.html(html);
+            console.log("효자명단");
+            break;
+        case "pyeonghwa":
+        	areaName.html("평화");
+        	var names = [
+			  "곽수열","유정희","김주연","남궁정","신현경",
+			  "박규업","임화정","박주흥","백현숙","백칠성",
+			  "김해연","이영애","이지원","송정자","이창준"
+			  ,"이선아","임수환","이성숙","최재원","윤  욱"
+			];
+    		var html = "";
+				for (var i = 0; i < names.length; i++) {
+				  html += '<input type="checkbox" class="names"' + 'value="' + names[i] + '"' + ' name="attendanceMember"/>' + names[i] + '<br/>';
+				}
+    		nameList.html(html);
+            console.log("평화명단");
+            break;
+        case "inhoo":
+        	areaName.html("인후");
+        	var names = [
+			  "강신철","김광중","이지영","김낙중","김혜경"
+			  ,"김수종","구도자","김영아","박종규","황미녀"
+			  ,"성낙호","이미경","이윤근","신은숙","이차신"
+			  ,"김종임","김봉순"
+			];
+    		var html = "";
+				for (var i = 0; i < names.length; i++) {
+				  html += '<input type="checkbox" class="names"' + 'value="' + names[i] + '"' + ' name="attendanceMember"/>' + names[i] + '<br/>';
+				}
+    		nameList.html(html);
+            console.log("인후명단");
+            break;
+        case "jooghwa":
+        	areaName.html("중화산");
+        var names = [
+			  "강재운","윤점순","김평신","박금숙","신문섭",
+			  "정안자","신성은","오성탁","강혜숙","오화정",
+			  "이종승","문은성","정순영","임순덕","강학남",
+			  "조복례","차미희","홍대진","임시경","유정용"
+			];
+    		var html = "";
+				for (var i = 0; i < names.length; i++) {
+				  html += '<input type="checkbox" class="names"' + 'value="' + names[i] + '"' + 'name="attendanceMember"/>' + names[i] + '<br/>';
+				}
+    		nameList.html(html);
+            console.log("중화산명단");
+            break;
+        case "hosung" :
+        	areaName.html("호성");
+        	var names = [
+			  "김은하","신철희","김의중","김동희","김준형"
+			  ,"황인아","박동규","임수지","소화경","박영선"
+			  ,"신융식","이상필","안영수","강미선","이성광"
+			  ,"김수양","이영빈","김혜성","임명순","노영복"
+			  ,"채종익","김수남","최행숙"
+			];
+    		var html = "";
+				for (var i = 0; i < names.length; i++) {
+				  html += '<input type="checkbox" class="names"' + 'value="' + names[i] + '"' + ' name="attendanceMember"/>' + names[i] + '<br/>';
+				}
+    		nameList.html(html);
+            console.log("호성명단");
+            break;    
+        case "hyukshin1" :
+        	areaName.html("혁신1");
+        	var names = [
+			  "나선재","고은솔","박경남","노은영","박경숙"
+			  ,"박성원","김복숙","박창욱","주숙영","손금희"
+			  ,"신향란","신혜란","양재식","박경희","이영임"
+			  ,"임동현","고은별","정대수","이화선","정수연"
+			  ,"최준영","양소현","한병주"
+			];
+    		var html = "";
+				for (var i = 0; i < names.length; i++) {
+				  html += '<input type="checkbox" class="names"' + 'value="' + names[i] + '"' + ' name="attendanceMember"/>' + names[i] + '<br/>';
+				}
+    		nameList.html(html);
+            console.log("혁신1명단");
+            break;
+        case "hyukshin2" :
+        	areaName.html("혁신2");
+        	var names = [
+			  "김순금","나대연","나윤수","조영진","나한나"
+			  ,"박나라","이동섭","박정자","이만석","임지은"
+			  ,"최동신","곽화숙"
+			];
+    		var html = "";
+				for (var i = 0; i < names.length; i++) {
+				  html += '<input type="checkbox" class="names"' + 'value="' + names[i] + '"' + ' name="attendanceMember"/>' + names[i] + '<br/>';
+				}
+    		nameList.html(html);
+            console.log("혁신2명단");
+            break;
+        case "eco" :
+        	areaName.html("에코");
+        	var names = [
+			"김경옥","김경숙","김지원","김지현","박영순"
+			,"강옥희","신경아","신윤호","이기혜","안영원"
+			,"양유선","엄기석","우은이","전강일","김경민"
+			,"조형규","오희영","황병용","방종희","허미순"
+			,"하재환","김혜미"
+			];
+    		var html = "";
+				for (var i = 0; i < names.length; i++) {
+				  html += '<input type="checkbox" class="names"' + 'value="' + names[i] + '"' + ' name="attendanceMember"/>' + names[i] + '<br/>';
+				}
+    		nameList.html(html);
+            console.log("에코명단");
+            break;      
+        case "songcheon" :
+        	areaName.html("송천");
+        	var names = [
+			 "김희성","김봉순","이현자","이희안","백영순"
+			 ,"임만기","이명신","정미화","정승선","함한진"
+			 ,"최영숙","심정자"
+			];
+    		var html = "";
+				for (var i = 0; i < names.length; i++) {
+				  html += '<input type="checkbox" class="names"' + 'value="' + names[i] + '"' + ' name="attendanceMember"/>' + names[i] + '<br/>';
+				}
+    		nameList.html(html);
+            console.log("송천명단");
+            break;      
+         case "youngAdult" :
+        	areaName.html("청년직장인");
+        	var names = [
+			  "정주은","김강건","박창현","임우진","최강록"
+			  ,"곽주은","곽소성","박다희","백진희","이유진"
+			  ,"이정현","이혜원","정채리","최민지","최다은"
+			  ,"홍경오","이요한","김수현","신하현","성하은"
+			  ,"김현욱","김시온","서동균"
+			];
+    		var html = "";
+				for (var i = 0; i < names.length; i++) {
+				  html += '<input type="checkbox" class="names"' + 'value="' + names[i] + '"' + ' name="attendanceMember"/>' + names[i] + '<br/>';
+				}
+    		nameList.html(html);
+            console.log("청년직장인명단");
+            break;      
+          case "collage" :
+        	areaName.html("대학생");
+        	var names = [
+			  "유의석","이휘영","김동건","남궁훈","윤두형"
+			  ,"박도현","성정우","이정혁","이소망","박주현"
+			  ,"신현교","주신영","조설우","소예령","정채은"
+			  ,"김은진","염한준","홍지오","황예원","최서빈"
+			  ,"신하경","성하은"
+			];
+    		var html = "";
+				for (var i = 0; i < names.length; i++) {
+				  html += '<input type="checkbox" class="names"' + 'value="' + names[i] + '"' + ' name="attendanceMember"/>' + names[i] + '<br/>';
+				}
+    		nameList.html(html);
+            console.log("대학생명단");
+            break;      
+          case "student" :
+        	areaName.html("중고등부");
+        	var names = [
+			  "장건희","황준현","박진재","이연수","이석우"
+			  ,"장태욱","박선민","안예성","이준성","이민성"
+			  ,"안예온","장다영","전지윤","장희원","이가현"
+			  ,"이주비","박선아"
+			];
+    		var html = "";
+				for (var i = 0; i < names.length; i++) {
+				  html += '<input type="checkbox" class="names"' + 'value="' + names[i] + '"' + ' name="attendanceMember"/>' + names[i] + '<br/>';
+				}
+    		nameList.html(html);
+            console.log("중고등부명단");
+            break;      
+           case "kids" :
+        	areaName.html("유초등부");
+        	var names = [
+			 "최윤석","신은수","안시완","안시온","김재하"
+			 ,"이채현","이유비","신고은","최진주","최유림"
+			 ,"박려원","박려진","박려민","김가은","이하임"
+			 ,"나건우","임로하"
+			];
+    		var html = "";
+				for (var i = 0; i < names.length; i++) {
+				  html += '<input type="checkbox" class="names"' + 'value="' + names[i] + '"' + ' name="attendanceMember"/>' + names[i] + '<br/>';
+				}
+    		nameList.html(html);
+            console.log("유초등부명단");
+            break;           
+          default:
+        	areaName.html("지역및 소그룹을 선택해주세요.");
+        	
+    		var html = "";
+				
+    		nameList.html(html);
+            console.log("none");
+            break;           
+            
+            }
+            
+            });
+            
+            //전체체크 기능 구현
+            
+            $("#allCheck").on("click", function(){
+			   console.log('allCheck');
+			var checked = $('#allCheck').is(':checked');
+			if(checked){
+					$('.names').prop('checked',true);
+					 const selectedElements = document.querySelectorAll('.names:checked');
+			  
+					 // 선택된 목록의 개수 세기
+					 const selectedElementsCnt = selectedElements.length;
+						  
+					console.log(selectedElementsCnt);
+						  
+					// 출력
+					 $('#result').html("총 인원수 : " + selectedElementsCnt);
+					 
+					 //전송데이터 셋팅
+					 $('#attendanceCount').val(selectedElementsCnt);
+					 console.log($('#attendanceCount').val() + "hidden input attendanceCount set ok")	
+					}else{
+					$('.names').prop('checked',false);
+					const selectedElements = document.querySelectorAll('.names:checked');
+			  
+					 // 선택된 목록의 개수 세기
+					 const selectedElementsCnt = selectedElements.length;
+					//출력
+					console.log(selectedElementsCnt);
+					$('#result').html("총 인원수 : 0");	
+					
+					 //전송데이터 셋팅
+					$('#attendanceCount').val(selectedElementsCnt);
+					 console.log($('#attendanceCount').val() + "hidden input attendanceCount set ok")
+					}		
+				});
+		
+		
+		//인원 수 카운트
+		
+		$(document).on("click", ".names", function() {
+            console.log("names 클릭함수 실행"); 
+            
+             // 선택된 목록 가져오기
+			 var selectedElements = document.querySelectorAll('input[type="checkbox"]:checked');
+			 
+			 //document.querySelectorAll('.names:checked');
+			  
+					 // 선택된 목록의 개수 세기
+					 var selectedElementsCnt = selectedElements.length;
+						  
+					console.log(selectedElementsCnt);
+					// 출력
+					 $('#result').html("총 인원수 : " + selectedElementsCnt);
+					 $('#attendanceCount').val(selectedElementsCnt);
+					 console.log($('#attendanceCount').val() + "hidden input attendanceCount set ok")
+					 if($('.names').is(':checked')){
+
+	  					console.log($(this).val());
+	  					}
+					 
+            });
+			
+		//도움말 버튼 텍스트 변경
+		$("#helpBtn").on("click", function() {
+			  console.log("텍스트 변경 함수 실행");
+			
+			  const helpButton = $(this);
+			  const helpButtonContent = helpButton.text();
+			  const flex2 = $("#flex2");
+			  const isExpanded = helpButton.attr('aria-expanded') === 'true';
+			  if (isExpanded) {
+			    helpButton.text("도움말 닫기");
+			    flex2.css("display", "none"); // flex2 요소를 숨깁니다.
+			    console.log("flex2 숨김");
+			  } else {
+			    helpButton.text("도움말");
+			    flex2.css("display", "block"); // flex2 요소를 다시 표시합니다.
+			    console.log("flex2 표시");
+			  }
+			
+			  console.log("텍스트 변경 완료");
+			});
+			
+			
+			
+	
+
+});
+
+</script>
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/popper.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="
+sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+ 
+
+ </body>
+</html>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- id : "JOIN 하는 POJO 클래스의 CamelCase명 또는, @Alias("키값")" -->
+<!-- type : "FROM 대상인 POJO 클래스의 CamelCase명 또는, @Alias("키값")" -->
+<!-- column : "DB 컬럼명" -->
+<!-- property: "type에 적힌 POJO클래스의 속성명" -->
+
+<mapper namespace="board.mapper.BoardMapper">
+
+<resultMap id="BoardDto" type="board.dto.BoardDto">
+    <result property="boardIdx" column="board_idx" />
+    <result property="title" column="title" />
+    <result property="contents" column="contents" />
+    <result property="hitCnt" column="hit_cnt" />
+    <result property="creatorId" column="creator_id" />
+    <result property="createdDatetime" column="created_datetime" />
+    <result property="updaterId" column="updater_id" />
+    <result property="updatedDatetime" column="updated_datetime" />
+    
+    <!-- javaType : "객체를 속성으로 가지고있는 해당 객체의 CamelCase명 또는, @Alias("키값")" -->
+<!-- property : "객체참조변수명" -->
+<!-- id : "PK" -->
+    <association property="boardDto" javaType="board.dto.BoardDto">
+         <id property="boardIdx" column="board_idx" />
+         <result property="title" column="title" />
+         <result property="contents" column="contents" />
+         <result property="hitCnt" column="hit_cnt" />
+         <result property="creatorId" column="creator_id" />
+         <result property="createdDatetime" column="created_datetime" />
+         <result property="updaterId" column="updater_id" />
+         <result property="updatedDatetime" column="updated_datetime" />
+    </association>
+</resultMap>
+
+<select id="openRedirectTest" resultType="board.dto.BoardDto">
+
+	<![CDATA[
+	
+		SELECT
+			assembly_idx AS assemblyIdx,
+			creator_name AS creatorName,
+			assembly_sort AS assemblySort,
+			assembly_name AS assemblyName,
+			age_area AS ageArea,
+			small_group AS smallGroup, 
+			significant AS significant,
+			attendance_member AS attendanceMember,
+			attendance_count AS attendanceCount,
+			assembly_date AS assemblyDate
+		FROM
+			man_count_data
+		WHERE
+            deleted_yn = 'N'
+        ORDER BY assembly_idx DESC
+	
+	
+	]]>
+
+
+</select>
+
+	<insert id="insertBoard" parameterType="board.dto.BoardDto">
+	<![CDATA[
+		
+		INSERT INTO man_count_data
+		(
+		  creator_name,
+		  assembly_sort,
+		  assembly_name,
+		  age_area,
+		  small_group,
+		  significant,
+		  attendance_member,
+		  attendance_count,
+		  assembly_date
+		)
+		VALUES
+		(
+		  #{creatorName},
+		  #{assemblySort},
+		  #{assemblyName},
+		  #{ageArea},
+		  #{smallGroup},
+		  #{significant},
+		  #{attendanceMember},
+		  #{attendanceCount},
+		  NOW()
+		)
+		  
+	
+	]]>
+	
+	</insert>
+	
+	<select id="boardDetail" resultType="board.dto.BoardDto">
+		
+		<![CDATA[
+		SELECT
+			assembly_idx AS assemblyIdx,
+			assembly_sort AS assemblySort,
+			assembly_name AS assemblyName,
+			age_area AS ageArea,
+			small_group AS smallGroup,
+			significant AS significant,
+			attendance_member AS attendanceMember,
+			attendance_count AS attendanceCount,
+			assembly_date AS assemblyDate
+		FROM
+			man_count_data
+		WHERE
+			assembly_idx = #{assemblyIdx}		
+		
+		]]>
+	
+	
+	</select>
+
+
+</mapper>
+
