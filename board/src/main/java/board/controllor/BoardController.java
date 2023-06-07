@@ -52,7 +52,7 @@ public class BoardController {
 	//test redirect road
 	@GetMapping(value = "/openRedirectTest.do")
 	public ModelAndView openRedirectTest() throws Exception {
-		ModelAndView mv = new ModelAndView("/redirectTest");
+		ModelAndView mv = new ModelAndView("/index");
 		
 		List<Map<String,Object>> list = service.openRedirectTest();
 		
