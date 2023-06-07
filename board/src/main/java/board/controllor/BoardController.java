@@ -43,7 +43,7 @@ public class BoardController {
 	//게시글 작성화면 로드
 	
 	@GetMapping(value = "/openBoardWrite.do")
-	public String openBoardWrite() throws Exception {
+	public String openBoardWrite() throws Exception { 
 		
 		return "/BoardWrite";
 	}
